@@ -1,6 +1,10 @@
 {
   "version": "1.0.0",
-  "keywords": [],
+  "keywords": [
+    "strapi-plugin",
+    "media-uploader",
+    "folder-manager"
+  ],
   "type": "commonjs",
   "exports": {
     "./package.json": "./package.json",
@@ -49,7 +53,7 @@
     "typescript": "^5.8.2"
   },
   "peerDependencies": {
-    "@strapi/strapi": ">=5.11.0",
+    "@strapi/strapi": ">=5.0.0",
     "@strapi/sdk-plugin": "^5.3.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -72,6 +76,6 @@
   "bugs": {
     "url": "https://woa.com/intl/intl_cgi/strapi-plugin-media-upload/issues"
   },
-  "homepage": "https://git.woa.com/intl/intl_cgi/strapi-plugin-media-upload#readme",
-  "author": "elixjliu <elixjliu@tencent.com>"
+  "homepage": "https://github.com/Littlexiaoxiaojian/strapi-plugin-media-upload#readme",
+  "author": "eli Mr.liu93@outlook.com"
 }
