@@ -1,13 +1,5 @@
 export default [
   {
-    method: 'GET',
-    path: '/pluginInfo',
-    handler: 'controller.index',
-    config: {
-      policies: [],
-    },
-  },
-  {
     method: 'POST',
     path: '/folder',
     handler: 'controller.createFolder',
