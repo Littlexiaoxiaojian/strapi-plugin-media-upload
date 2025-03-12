@@ -1,5 +1,5 @@
 {
-  "version": "0.0.0",
+  "version": "1.0.0",
   "keywords": [],
   "type": "commonjs",
   "exports": {
@@ -36,7 +36,7 @@
     "react-intl": "^7.1.6"
   },
   "devDependencies": {
-    "@strapi/strapi": "^5.11.0",
+    "@strapi/strapi": ">=5.0.0",
     "@strapi/sdk-plugin": "^5.3.2",
     "prettier": "^3.5.3",
     "react": "^18.3.1",
@@ -49,7 +49,7 @@
     "typescript": "^5.8.2"
   },
   "peerDependencies": {
-    "@strapi/strapi": "^5.11.0",
+    "@strapi/strapi": ">=5.11.0",
     "@strapi/sdk-plugin": "^5.3.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -58,12 +58,12 @@
   },
   "strapi": {
     "kind": "plugin",
-    "name": "strapi-plugin-media-upload",
+    "name": "media",
     "displayName": "Media Upload",
-    "description": "A plugin that help you upload file to a specific file system using rest api"
+    "description": "A plugin that help you upload file to a specific file system using api"
   },
   "name": "strapi-plugin-media-upload",
-  "description": "A plugin that help you upload file to a specific file system using rest api",
+  "description": "A plugin that help you upload file to a specific file system using api",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -72,6 +72,6 @@
   "bugs": {
     "url": "https://woa.com/intl/intl_cgi/strapi-plugin-media-upload/issues"
   },
-  "homepage": "https://woa.com/intl/intl_cgi/strapi-plugin-media-upload#readme",
+  "homepage": "https://git.woa.com/intl/intl_cgi/strapi-plugin-media-upload#readme",
   "author": "elixjliu <elixjliu@tencent.com>"
 }
