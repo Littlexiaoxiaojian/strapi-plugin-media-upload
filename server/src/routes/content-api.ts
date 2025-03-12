@@ -9,7 +9,7 @@ export default [
   },
   {
     method: 'POST',
-    path: '/createFolder',
+    path: '/folder',
     handler: 'controller.createFolder',
     config: {
       policies: [],
@@ -25,7 +25,7 @@ export default [
   },
   {
     method: 'PUT',
-    path: '/updateFolder',
+    path: '/folder',
     handler: 'controller.updateFolder',
     config: {
       policies: [],
@@ -33,7 +33,7 @@ export default [
   },
   {
     method: 'POST',
-    path: '/uploadMedia',
+    path: '/upload',
     handler: 'controller.uploadMedia',
     config: {
       policies: [],
