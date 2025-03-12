@@ -24,35 +24,37 @@ Upload media files to a specific folder using the provided API endpoints.
 
 ### Folders Manager
 #### 1.Query Folders
-   - `GET /<strapiprefix>/media/folders`
-   - Query Params: 
-     - parentId (optional): ID of the parent folder, return root folders if not fill.
+- `GET /<strapiprefix>/media/folders`
+- Query Params: 
+  - parentId (optional): ID of the parent folder, return root folders if not fill.
+
 #### 2.Create Folder
-   - `POST /<strapiprefix>/media/folder`
-   - Request Body: 
-        ```
-        {
-            "name": "New Folder", // Required, folder name
-            "parentId": 1         // Optional, ID of the parent folder
-        }
-        ```
+- `POST /<strapiprefix>/media/folder`
+- Request Body: 
+    ```
+    {
+        "name": "New Folder", // Required, folder name
+        "parentId": 1         // Optional, ID of the parent folder
+    }
+    ```
+
 #### 3.Update Folder
-   - `PUT /<strapiprefix>/media/folder`
-   - Request Body: 
-        ```
-        {
-            "id": 1,              // Required, ID of the folder to update,
-            "name": "New Folder", // Required, folder name
-            "parentId": 1         // Optional, new parent folder ID
-        }
-        ```
+- `PUT /<strapiprefix>/media/folder`
+- Request Body: 
+    ```
+    {
+        "id": 1,              // Required, ID of the folder to update,
+        "name": "New Folder", // Required, folder name
+        "parentId": 1         // Optional, new parent folder ID
+    }
+    ```
 
 ### Media Uploader
 #### 1.Upload Media
-   - `POST /<strapiprefix>/media/upload`
-   - Request Body:
-     - file (multipart/form-data): The file to upload.
-     - folderId (optional): ID of the folder where the file should be uploaded.
+- `POST /<strapiprefix>/media/upload`
+- Request Body:
+  - file (multipart/form-data): The file to upload.
+  - folderId (optional): ID of the folder where the file should be uploaded.
 
 ## Compatibility
 
