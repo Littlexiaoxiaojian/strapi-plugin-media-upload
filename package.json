@@ -71,7 +71,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@woa.com/intl/intl_cgi/strapi-plugin-media-upload.git"
+    "url": "git+ssh://git@github.com:Littlexiaoxiaojian/strapi-plugin-media-upload.git"
   },
   "bugs": {
     "url": "https://woa.com/intl/intl_cgi/strapi-plugin-media-upload/issues"
