@@ -160,6 +160,25 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
       ctx.body = err;
     }
   },
+
+  // delete folder
+  async deleteFolder(ctx) {
+    try {
+      // get folder id
+      const folderId = ctx.request.query.id;
+      console.log('Folder ids:', folderId);
+
+      // delete folder
+      const folderService = strapi.plugins.upload.services.folder;
+      const deletedFolders = await folderService.deleteByIds(folderId);
+
+      // send response
+      ctx.status = 200;
+      ctx.body = deletedFolders;
+    } catch (err) {
+      ctx.body = err;
+    }
+  },
 });
 
 export default controller;

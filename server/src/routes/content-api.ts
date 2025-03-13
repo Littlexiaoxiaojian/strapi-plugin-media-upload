@@ -47,4 +47,12 @@ export default [
       policies: [],
     },
   },
+  {
+    method: 'DELETE',
+    path: '/folder',
+    handler: 'controller.deleteFolder',
+    config: {
+      policies: [],
+    },
+  }
 ];

@@ -49,6 +49,11 @@ Upload media files to a specific folder using the provided API endpoints.
     }
     ```
 
+#### 4.Delete Folder
+- `DELETE /<strapiprefix>/media/folder`
+- Query Params: 
+  - id: the id of folder should be deleted (attention: folders and files under this folder would be deleted by the way)
+
 ### Media Uploader
 #### 1.Upload Media
 - `POST /<strapiprefix>/media/upload`
