@@ -4,7 +4,7 @@ import { yup } from '@strapi/utils';
 const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
   index(ctx) {
     ctx.body = strapi
-      .plugin('strapi-plugin-media-upload')
+      .plugin('media')
       // the name of the service file & the method.
       .service('service')
       .getWelcomeMessage();
@@ -132,6 +132,29 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
       ctx.status = 200;
       ctx.body = {
         data: uploadedFiles,
+      };
+    } catch (err) {
+      ctx.body = err;
+    }
+  },
+
+  // move media to a specific folder
+  async moveMedia(ctx) {
+    try {
+      // get file id
+      const fileId = ctx.request.body.fileId;
+      const folderId = ctx.request.body.folderId;
+
+      // create image using the upload plugin
+      const updatedFile = await strapi.plugins.upload.services.upload.updateFileInfo(fileId, {
+        folder: folderId,
+      });
+      console.log('Uploaded file:', updatedFile);
+
+      // send response
+      ctx.status = 200;
+      ctx.body = {
+        data: updatedFile,
       };
     } catch (err) {
       ctx.body = err;

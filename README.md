@@ -56,6 +56,16 @@ Upload media files to a specific folder using the provided API endpoints.
   - file (multipart/form-data): The file to upload.
   - folderId (optional): ID of the folder where the file should be uploaded.
 
+#### 2.Move Media
+- `PUT /<strapiprefix>/media/move`
+- Request Body: 
+    ```
+    {
+        "fileId": 1,    // Required, ID of the file to move,
+        "folderId": 1,  // Required, folder id
+    }
+    ```
+
 ## Compatibility
 
 This plugin is compatible with Strapi `5.0.0` and above.

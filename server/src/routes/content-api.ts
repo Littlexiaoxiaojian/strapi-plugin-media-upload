@@ -1,5 +1,13 @@
 export default [
   {
+    method: 'GET',
+    path: '/pluginInfo',
+    handler: 'controller.index',
+    config: {
+      policies: [],
+    },
+  },
+  {
     method: 'POST',
     path: '/folder',
     handler: 'controller.createFolder',
@@ -27,6 +35,14 @@ export default [
     method: 'POST',
     path: '/upload',
     handler: 'controller.uploadMedia',
+    config: {
+      policies: [],
+    },
+  },
+  {
+    method: 'PUT',
+    path: '/move',
+    handler: 'controller.moveMedia',
     config: {
       policies: [],
     },
