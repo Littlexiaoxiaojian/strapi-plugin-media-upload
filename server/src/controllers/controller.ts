@@ -43,6 +43,14 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
         where: {
           parent: parentId,
         },
+        populate: {
+          children: {
+            count: true,
+          },
+          files: {
+            count: true,
+          },
+        },
       });
       ctx.body = folders;
     } catch (err) {
