@@ -30,6 +30,7 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
       });
       ctx.body = folder;
     } catch (err) {
+      ctx.status = 500;
       ctx.body = err;
     }
   },
@@ -45,6 +46,7 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
       });
       ctx.body = folders;
     } catch (err) {
+      ctx.status = 500;
       ctx.body = err;
     }
   },
@@ -102,6 +104,7 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
       );
       ctx.body = folder;
     } catch (err) {
+      ctx.status = 500;
       ctx.body = err;
     }
   },
@@ -134,19 +137,26 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
         data: uploadedFiles,
       };
     } catch (err) {
+      ctx.status = 500;
       ctx.body = err;
     }
   },
 
-  // move media to a specific folder
-  async moveMedia(ctx) {
+  // update media
+  async updateMedia(ctx) {
     try {
-      // get file id
-      const fileId = ctx.request.body.fileId;
+      // get file info
+      const fileId = ctx.request.body.id;
+      const name = ctx.request.body.name;
+      const alternativeText = ctx.request.body.alternativeText;
+      const caption = ctx.request.body.caption;
       const folderId = ctx.request.body.folderId;
 
-      // create image using the upload plugin
+      // update file using the upload plugin
       const updatedFile = await strapi.plugins.upload.services.upload.updateFileInfo(fileId, {
+        name: name,
+        alternativeText: alternativeText,
+        caption: caption,
         folder: folderId,
       });
       console.log('Uploaded file:', updatedFile);
@@ -157,6 +167,7 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
         data: updatedFile,
       };
     } catch (err) {
+      ctx.status = 500;
       ctx.body = err;
     }
   },
@@ -176,6 +187,23 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
       ctx.status = 200;
       ctx.body = deletedFolders;
     } catch (err) {
+      ctx.status = 500;
+      ctx.body = err;
+    }
+  },
+
+  // get folder structure
+  async getFolderStructure(ctx) {
+    try {
+      // get folder structure
+      const folderService = strapi.plugins.upload.services.folder;
+      const folders = await folderService.getStructure();
+
+      // send response
+      ctx.status = 200;
+      ctx.body = folders;
+    } catch (err) {
+      ctx.status = 500;
       ctx.body = err;
     }
   },

@@ -41,8 +41,8 @@ export default [
   },
   {
     method: 'PUT',
-    path: '/move',
-    handler: 'controller.moveMedia',
+    path: '/update',
+    handler: 'controller.updateMedia',
     config: {
       policies: [],
     },
@@ -54,5 +54,13 @@ export default [
     config: {
       policies: [],
     },
-  }
+  },
+  {
+    method: 'GET',
+    path: '/folder-structure',
+    handler: 'controller.getFolderStructure',
+    config: {
+      policies: [],
+    },
+  },
 ];

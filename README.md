@@ -54,6 +54,9 @@ Upload media files to a specific folder using the provided API endpoints.
 - Query Params: 
   - id: the id of folder should be deleted (attention: folders and files under this folder would be deleted by the way)
 
+#### 5.Folder Structure
+- `GET /<strapiprefix>/media/folder-structure`
+
 ### Media Uploader
 #### 1.Upload Media
 - `POST /<strapiprefix>/media/upload`
@@ -61,13 +64,16 @@ Upload media files to a specific folder using the provided API endpoints.
   - file (multipart/form-data): The file to upload.
   - folderId (optional): ID of the folder where the file should be uploaded.
 
-#### 2.Move Media
-- `PUT /<strapiprefix>/media/move`
+#### 2.Update Media
+- `PUT /<strapiprefix>/media/update`
 - Request Body: 
     ```
     {
-        "fileId": 1,    // Required, ID of the file to move,
-        "folderId": 1,  // Required, folder id
+        "id": 1,    // Required, ID of the file to move,
+        "name": "New Name", // Optional, new file name
+        "alternativeText": "New Alternative Text", // Optional, new alternative text,
+        "caption": "New Caption", // Optional, new caption,
+        "folderId": 1,  // Optional, folder id
     }
     ```
 
