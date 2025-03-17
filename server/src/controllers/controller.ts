@@ -76,6 +76,15 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
       const folderService = strapi.plugins.upload.services.folder;
       const folder = await strapi.query('plugin::upload.folder').findOne({
         where: { id: folderId },
+        populate: {
+          parent: true,
+          children: {
+            count: true,
+          },
+          files: {
+            count: true,
+          },
+        },
       });
       ctx.body = folder;
     } catch (err) {
