@@ -57,6 +57,11 @@ Upload media files to a specific folder using the provided API endpoints.
 #### 5.Folder Structure
 - `GET /<strapiprefix>/media/folder-structure`
 
+#### 6.Query Folder By ID
+- `GET /<strapiprefix>/media/folder`
+- Query Params: 
+  - id (optional): ID of the folder
+
 ### Media Uploader
 #### 1.Upload Media
 - `POST /<strapiprefix>/media/upload`

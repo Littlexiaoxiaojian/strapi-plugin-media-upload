@@ -59,6 +59,31 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
     }
   },
 
+  // get folder by id
+  async getFolder(ctx) {
+    // Define validation schema for folder ID
+    const folderIdSchema = yup.object({
+      id: yup
+        .number()
+        .required('Folder ID is required')
+        .positive('Folder ID must be a positive number'),
+    });
+
+    try {
+      // Validate query parameters
+      await folderIdSchema.validate(ctx.request.query);
+      const folderId = ctx.request.query.id;
+      const folderService = strapi.plugins.upload.services.folder;
+      const folder = await strapi.query('plugin::upload.folder').findOne({
+        where: { id: folderId },
+      });
+      ctx.body = folder;
+    } catch (err) {
+      ctx.status = 500;
+      ctx.body = err;
+    }
+  },
+
   // update folder name
   async updateFolder(ctx) {
     const updateFolderSchema = yup.object({

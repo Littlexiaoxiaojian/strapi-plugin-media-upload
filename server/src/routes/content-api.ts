@@ -24,6 +24,14 @@ export default [
     },
   },
   {
+    method: 'GET',
+    path: '/folder',
+    handler: 'controller.getFolder',
+    config: {
+      policies: [],
+    },
+  },
+  {
     method: 'PUT',
     path: '/folder',
     handler: 'controller.updateFolder',
