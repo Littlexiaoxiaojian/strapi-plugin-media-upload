@@ -27,6 +27,7 @@ Upload media files to a specific folder using the provided API endpoints.
 - `GET /<strapiprefix>/media/folders`
 - Query Params: 
   - parentId (optional): ID of the parent folder, return root folders if not fill.
+  - sort[] (optional): e.g.sort[0]=createdAt:asc&sort[1]=updatedAt:desc
 
 #### 2.Create Folder
 - `POST /<strapiprefix>/media/folder`

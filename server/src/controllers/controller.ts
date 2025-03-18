@@ -1,5 +1,6 @@
 import type { Core } from '@strapi/strapi';
 import { yup } from '@strapi/utils';
+const { createCoreController } = require("@strapi/strapi").factories;
 
 const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
   index(ctx) {
@@ -39,7 +40,8 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
   async getFolders(ctx) {
     try {
       const parentId = ctx.request.query.parentId ?? null;
-      const folders = await strapi.query('plugin::upload.folder').findMany({
+      const sort = ctx.request.query.sort;
+      const queryOptions: any = {
         where: {
           parent: parentId,
         },
@@ -51,7 +53,15 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
             count: true,
           },
         },
-      });
+      };
+      // Add sorting if provided
+      if (sort) {
+        queryOptions.orderBy = sort.map((sortItem: string) => {
+          const [field, order] = sortItem.split(':');
+          return { [field]: order || 'asc' };
+        });
+      }
+      const folders = await strapi.query('plugin::upload.folder').findMany(queryOptions);
       ctx.body = folders;
     } catch (err) {
       ctx.status = 500;
@@ -250,5 +260,4 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
     }
   },
 });
-
 export default controller;
