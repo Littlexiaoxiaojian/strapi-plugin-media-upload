@@ -71,4 +71,20 @@ export default [
       policies: [],
     },
   },
+  {
+    method: 'DELETE',
+    path: '/bulk-delete',
+    handler: 'controller.bulkDelete',
+    config: {
+      policies: [],
+    },
+  },
+  {
+    method: 'PUT',
+    path: '/bulk-move',
+    handler: 'controller.bulkMove',
+    config: {
+      policies: [],
+    },
+  },
 ];

@@ -244,6 +244,92 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
     }
   },
 
+  // bulk delete folder and files
+  async bulkDeleteFolder(ctx) {
+    try {
+      // get folder and file ids
+      const fileIds = ctx.request.body.fileIds;
+      const folderIds = ctx.request.body.folderIds;
+      console.log('File ids:', fileIds);
+      console.log('Folder ids:', folderIds);
+
+      // validate
+      if (!Array.isArray(fileIds) || !Array.isArray(folderIds)) {
+        ctx.status = 400;
+        ctx.body = {
+          "msg": "invalid params"
+        };
+        return;
+      }
+
+      // delete files
+      const fileService = strapi.plugins.upload.services.file;
+      const deletedFiles = await fileService.deleteByIds(fileIds);
+
+      // delete folders
+      const folderService = strapi.plugins.upload.services.folder;
+      const deletedFolders = await folderService.deleteByIds(folderIds);
+
+      // send response
+      ctx.status = 200;
+      ctx.body.deletedFiles = deletedFiles;
+      ctx.body.deletedFolders = deletedFolders;
+    } catch (err) {
+      ctx.status = 500;
+      ctx.body = err;
+    }
+  },
+
+  // bulk move files and folders
+  async bulkMove(ctx) {
+    try {
+      // get folder and file ids
+      const fileIds = ctx.request.body.fileIds;
+      const folderIds = ctx.request.body.folderIds;
+      const targetFolderId = ctx.request.body.targetFolderId;
+      console.log('File ids:', fileIds);
+      console.log('Folder ids:', folderIds);
+      console.log('Target Folder id:', targetFolderId);
+
+      // validate
+      if (!Array.isArray(fileIds) || !Array.isArray(folderIds) || !targetFolderId) {
+        ctx.status = 400;
+        ctx.body = {
+          "msg": "invalid params"
+        };
+        return;
+      }
+
+      // move
+      const uploadService = strapi.plugins.upload.services.upload;
+      const folderService = strapi.plugins.upload.services.folder;
+      const fileMoveResults = await Promise.all(
+        fileIds.map(async (fileId) => {
+              const result = await uploadService.updateFileInfo(fileId, {
+                folder: targetFolderId,
+              });
+              return result;
+          })
+      );
+      const folderMoveResults = await Promise.all(
+        fileIds.map(async (folderId) => {
+              const result = await folderService.update(folderId, {
+                parent: targetFolderId,
+              });
+              return result;
+          })
+      );
+
+      ctx.body = {
+        movedFiles: fileMoveResults,
+        movedFolders: folderMoveResults,
+      };
+    } catch (err) {
+      ctx.status = 500;
+      ctx.body = err;
+    }
+  },
+
   // get folder structure
   async getFolderStructure(ctx) {
     try {
