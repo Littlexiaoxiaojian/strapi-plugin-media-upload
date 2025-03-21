@@ -63,6 +63,28 @@ Upload media files to a specific folder using the provided API endpoints.
 - Query Params: 
   - id (optional): ID of the folder
 
+#### 7.Delete Folders and Files
+- `POST /<strapiprefix>/media/bulk-delete`
+- Request Body: 
+    ```
+    {
+      "fileIds": [27],    // Required, ID of the files to delete
+      "folderIds": [20]   // Required, ID of the folders to delete
+    }
+    ```
+
+#### 8.Move Folders and Files
+- `POST /<strapiprefix>/media/bulk-move`
+- Request Body: 
+    ```
+    {
+      "targetFolderId": 21, // Required, ID of the target folder, if not provided, the items would be move to the root folder.
+      "fileIds": [27],      // Required, ID of the files to delete
+      "folderIds": [20]     // Required, ID of the folders to delete
+    }
+    ```
+
+
 ### Media Uploader
 #### 1.Upload Media
 - `POST /<strapiprefix>/media/upload`

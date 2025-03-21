@@ -1,6 +1,6 @@
 import type { Core } from '@strapi/strapi';
 import { yup } from '@strapi/utils';
-const { createCoreController } = require("@strapi/strapi").factories;
+const { createCoreController } = require('@strapi/strapi').factories;
 
 const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
   index(ctx) {
@@ -41,10 +41,12 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
     try {
       const parentId = ctx.request.query.parentId ?? null;
       const sort = ctx.request.query.sort;
+      const queryString = ctx.request.query._q ?? '';
       const queryOptions: any = {
         where: {
           parent: parentId,
         },
+        _q: queryString,
         populate: {
           children: {
             count: true,
@@ -83,7 +85,6 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
       // Validate query parameters
       await folderIdSchema.validate(ctx.request.query);
       const folderId = ctx.request.query.id;
-      const folderService = strapi.plugins.upload.services.folder;
       const folder = await strapi.query('plugin::upload.folder').findOne({
         where: { id: folderId },
         populate: {
@@ -129,16 +130,7 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
       }
 
       // get or create api user
-      let apiUser = await strapi.query('admin::user').findOne({ where: { username: 'API USER' } });
-      if (apiUser === null) {
-        apiUser = await strapi.query('admin::user').create({
-          data: {
-            username: 'API USER',
-            isActive: 1,
-            roles: ['1'],
-          },
-        });
-      }
+      const apiUser: any = await this.getApiUser();
 
       // update folder
       const folderService = strapi.plugins.upload.services.folder;
@@ -245,19 +237,17 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
   },
 
   // bulk delete folder and files
-  async bulkDeleteFolder(ctx) {
+  async bulkDelete(ctx) {
     try {
       // get folder and file ids
       const fileIds = ctx.request.body.fileIds;
       const folderIds = ctx.request.body.folderIds;
-      console.log('File ids:', fileIds);
-      console.log('Folder ids:', folderIds);
 
       // validate
       if (!Array.isArray(fileIds) || !Array.isArray(folderIds)) {
         ctx.status = 400;
         ctx.body = {
-          "msg": "invalid params"
+          msg: 'invalid params',
         };
         return;
       }
@@ -272,8 +262,10 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
 
       // send response
       ctx.status = 200;
-      ctx.body.deletedFiles = deletedFiles;
-      ctx.body.deletedFolders = deletedFolders;
+      ctx.body = {
+        deletedFiles: deletedFiles,
+        deletedFolders: deletedFolders,
+      };
     } catch (err) {
       ctx.status = 500;
       ctx.body = err;
@@ -292,32 +284,43 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
       console.log('Target Folder id:', targetFolderId);
 
       // validate
-      if (!Array.isArray(fileIds) || !Array.isArray(folderIds) || !targetFolderId) {
+      if (!Array.isArray(fileIds) || !Array.isArray(folderIds)) {
         ctx.status = 400;
         ctx.body = {
-          "msg": "invalid params"
+          msg: 'invalid params',
         };
         return;
       }
+
+      // get api user
+      const apiUser: any = await this.getApiUser();
 
       // move
       const uploadService = strapi.plugins.upload.services.upload;
       const folderService = strapi.plugins.upload.services.folder;
       const fileMoveResults = await Promise.all(
         fileIds.map(async (fileId) => {
-              const result = await uploadService.updateFileInfo(fileId, {
-                folder: targetFolderId,
-              });
-              return result;
-          })
+          const result = await uploadService.updateFileInfo(fileId, {
+            folder: targetFolderId,
+          });
+          return result;
+        })
       );
       const folderMoveResults = await Promise.all(
-        fileIds.map(async (folderId) => {
-              const result = await folderService.update(folderId, {
-                parent: targetFolderId,
-              });
-              return result;
-          })
+        folderIds.map(async (folderId) => {
+          const result = await folderService.update(
+            folderId,
+            {
+              parent: targetFolderId,
+            },
+            {
+              user: {
+                id: apiUser.id,
+              },
+            }
+          );
+          return result;
+        })
       );
 
       ctx.body = {
@@ -345,5 +348,21 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
       ctx.body = err;
     }
   },
+
+  // get or create api user
+  async getApiUser() {
+    let apiUser = await strapi.query('admin::user').findOne({ where: { username: 'API USER' } });
+    if (apiUser === null) {
+      apiUser = await strapi.query('admin::user').create({
+        data: {
+          username: 'API USER',
+          isActive: 1,
+          roles: ['1'],
+        },
+      });
+    }
+    return apiUser;
+  },
 });
+
 export default controller;

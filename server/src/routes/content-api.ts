@@ -72,7 +72,7 @@ export default [
     },
   },
   {
-    method: 'DELETE',
+    method: 'POST',
     path: '/bulk-delete',
     handler: 'controller.bulkDelete',
     config: {
