@@ -37,7 +37,7 @@ const HomePage = () => {
             marginBottom: '1rem',
             lineHeight: '1.6'
           }}>
-            <strong>Version:</strong> 1.1.1
+            <strong>Version:</strong> 1.1.2
           </p>
           <p style={{ 
             marginBottom: '1rem',

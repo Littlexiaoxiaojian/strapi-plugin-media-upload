@@ -81,6 +81,16 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
         .positive('Folder ID must be a positive number'),
     });
 
+    // set a function to build nested populate
+    const buildParentPopulate = (depth: number) => {
+      if (depth <= 1) return true;
+      return {
+        populate: {
+          parent: buildParentPopulate(depth - 1),
+        },
+      };
+    };
+
     try {
       // Validate query parameters
       await folderIdSchema.validate(ctx.request.query);
@@ -88,7 +98,7 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
       const folder = await strapi.query('plugin::upload.folder').findOne({
         where: { id: folderId },
         populate: {
-          parent: true,
+          parent: buildParentPopulate(6), // 设置最大递归深度为5
           children: {
             count: true,
           },
